@@ -7,7 +7,7 @@
 
 * Fork & Clone the repo
 ```
-  git clone https://github.com/[username]/CirleEd.git
+  git clone https://github.com/[username]/CirclEd.git
 ```
 
 * Navigate through the project
