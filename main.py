@@ -40,7 +40,7 @@ class Reminder(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     note = db.Column(db.String(100))
     date = db.Column(db.Integer)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
 
@@ -118,6 +118,19 @@ def AddPost():
 
     else:
         return render_template('addPost.html')
+
+@app.route('/AddReminder', methods=['GET', 'POST'])
+def AddReminder():
+    if request.method == 'POST':
+        user_id = session['user']
+        new_reminder = Reminder(note=request.form['note'],date=request.form['date'], 
+                                user=user_id)
+        db.session.add(new_reminder)
+        db.session.commit()
+        return redirect(url_for('index'))
+
+    else:
+        return render_template('addReminder.html')
 
 
 
