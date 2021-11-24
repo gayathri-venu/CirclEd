@@ -24,6 +24,8 @@ class Post(db.Model):
     content = db.Column(db.String(500))
     section = db.Column(db.Integer)
     author = db.Column(db.Integer, db.ForeignKey('user.id'))
+    author_name = db.Column(db.String(50))
+    author_image = db.Column(db.String(50))
     likes = db.Column(db.Integer, default=0)
     
 
@@ -90,28 +92,42 @@ def logout():
     return redirect(url_for('login'))
 
 
-'''@app.route('/index')
+@app.route('/index')
 def index():
     user_id = session['user']
     username = User.query.get(session['user']).name
     today = time.strftime("%m/%d/%Y")
-    showActivity = Post.query.filter_by(section=0).order_by(desc(Post.id)).all()
-    showOpportunity = Post.query.filter_by(section=1).order_by(desc(Post.id)).all()
-    showResource = Post.query.filter_by(section=2).order_by(desc(Post.id)).all()
-    reminder = Reminder.query.filter_by(user_id=user_id).filter_by(due = today).all()
-    return render_template('index.html', showActivity=showActivity, showOpportunity=showOpportunity, showResource=showResource, reminder=reminder)'''
+    showPost = Post.query.filter_by(section=0).order_by(desc(Post.id)).all()
+    reminder = Reminder.query.filter_by(user=user_id).filter_by(date = today).all()
+    return render_template('index.html', reminder=reminder, showPost=showPost)
 
+@app.route('/ShowOpportunity')
+def ShowOpportunity():
+    user_id = session['user']
+    username = User.query.get(session['user']).name
+    today = time.strftime("%m/%d/%Y")
+    showPost = Post.query.filter_by(section=1).order_by(desc(Post.id)).all()
+    reminder = Reminder.query.filter_by(user=user_id).filter_by(date = today).all()
+    return render_template('index.html', reminder=reminder, showPost=showPost)
 
-@app.route('/index')
-def index():
-    return render_template('index.html')
+@app.route('/ShowResource')
+def ShowResource():
+    user_id = session['user']
+    username = User.query.get(session['user']).name
+    today = time.strftime("%m/%d/%Y")
+    showPost = Post.query.filter_by(section=2).order_by(desc(Post.id)).all()
+    reminder = Reminder.query.filter_by(user=user_id).filter_by(date = today).all()
+    return render_template('index.html', reminder=reminder, showPost=showPost)
+
 
 @app.route('/AddPost', methods=['GET', 'POST'])
 def AddPost():
     if request.method == 'POST':
         user_id = session['user']
+        
         new_post = Post(content=request.form['content'],section=request.form['section'], 
-                                author=user_id)
+                                author=user_id,author_name=User.query.get(user_id).name,
+                                author_image=User.query.get(user_id).image)
         db.session.add(new_post)
         db.session.commit()
         return redirect(url_for('index'))
@@ -131,6 +147,15 @@ def AddReminder():
 
     else:
         return render_template('addReminder.html')
+
+
+@app.route('/like')
+def like():
+    post_id = int(request.args['id'])
+    post =  Post.query.get(post_id)
+    post.likes += 1
+    db.session.commit()
+    return redirect(url_for('index'))
 
 
 

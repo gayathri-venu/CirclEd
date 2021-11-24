@@ -1,0 +1,97 @@
+/* -----------------------------------------------------
+General
+-------------------------------------------------------*/
+body{
+    color: #1864ab;
+    background:#F0F2F5 !important;
+    
+    font-size:20px;
+    }
+    .text-color{
+    color:#00001c;
+    text-shadow: 0px 1px 1px #dbdbdb;
+    }
+    
+    .navbar{
+    margin-bottom:1%;
+    height:70px;
+    }
+    
+    button{
+    background-color:rgb(40,62,74);
+    color:white;
+    border-radius: 18px;
+    }
+    
+    li{
+        font-size:20px;
+    }
+    
+    
+    .content{
+    font-size:20px;
+    padding:2%;
+    margin:1%;
+    
+    }
+    
+    
+    /* -----------------------------------------------------
+    Register
+    -------------------------------------------------------*/
+    .navbar {
+      background: transparent;
+    }
+    body{
+      font-family: calibri;
+      width: 100%;
+    }
+    .login-block {
+      float: left;
+      width: 100%;
+      padding: 50px 0;
+    }
+    .banner-sec {
+      background: url() no-repeat left bottom;
+      background-size: cover;
+      min-height: 500px;
+      border-radius: 0 10px 10px 0;
+      padding: 0;
+    }
+    .container {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 15px 20px 0px rgba(0, 0, 0, 0.1);
+    }
+    
+    .login-sec {
+      padding: 50px 30px;
+      position: relative;
+    }
+    .login-sec .copy-text {
+      position: absolute;
+      width: 80%;
+      bottom: 20px;
+      font-size: 13px;
+      text-align: center;
+    }
+    .login-sec .copy-text i {
+      color: #feb58a;
+    }
+    .login-sec .copy-text a {
+      color: #e36262;
+    }
+    .login-sec h1 {
+      margin-bottom: 30px;
+      font-weight: 800;
+      font-size: 30px;
+      color: #de6262;
+    }
+    
+    .register-btn{
+      border-radius: 20px;
+      margin: 20px;
+    }
+    
+    
+    
