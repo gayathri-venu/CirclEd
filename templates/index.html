@@ -44,7 +44,7 @@
                         </button>
                         <button type="submit" class="btn btn-dark " value="{{ i.id }}"
                                 style="color:white !important;float:right">
-                            <a href="" style="color:white">
+                            <a href="{{ url_for('save', id = i.id)}}" style="color:white">
                                 Save </a>
                         </button>
                         <br><br>

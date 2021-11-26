@@ -2,12 +2,14 @@ from flask import Flask, render_template,request, redirect, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
 import time
+import re
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'the random string'
 db = SQLAlchemy(app)
+regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
 #######################MODELS###############################
 
@@ -83,8 +85,14 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
+        email = request.form['email']
+        if not re.fullmatch(regex, email):
+            return render_template('invalidEmail.html')
+        data = User.query.filter_by(email=email).first()
+        if data is not None:
+            return render_template('invalidEmail.html')
         new_user = User(name=request.form['name'],
-                        email=request.form['email'],
+                        email=email,
                         password=request.form['password'], role=request.form['role'],
                         image=request.form['image']
                         )
