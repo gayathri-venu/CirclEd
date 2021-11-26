@@ -44,6 +44,16 @@ class Reminder(db.Model):
     date = db.Column(db.Integer)
     user = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+class Saved(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    post = db.Column(db.Integer, db.ForeignKey('post.id'))
+    user = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+class Attend(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    course = db.Column(db.Integer, db.ForeignKey('course.id'))
+    student = db.Column(db.Integer, db.ForeignKey('user.id'))
+
 
 
 
@@ -154,6 +164,34 @@ def like():
     post_id = int(request.args['id'])
     post =  Post.query.get(post_id)
     post.likes += 1
+    db.session.commit()
+    return redirect(url_for('index'))
+
+
+@app.route('/save')
+def save():
+    post_id = int(request.args['id'])
+    user_id = session['user']
+    new_saved = Saved(post=post_id, user=user_id)
+    db.session.add(new_saved)
+    db.session.commit()
+    return redirect(url_for('index'))
+
+@app.route('/AddCourse')
+def AddCourse():
+    user_id = session['user']
+    new_course = Course(code=request.form['code'],name=request.form['name'],instructor=user_id)
+    db.session.add(new_course)
+    db.session.commit()
+    return redirect(url_for('index'))
+
+@app.route('/attend')
+def attend():
+    user_id = session['user']
+    code = request.form['code']
+    course = Course.query.filter_by(code=code).one()
+    new_attend = Attend(course=course,student=user_id)
+    db.seesion.add(new_attend)
     db.session.commit()
     return redirect(url_for('index'))
 
