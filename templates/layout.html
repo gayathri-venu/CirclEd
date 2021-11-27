@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/static/layout.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
 
 </head>
 
@@ -57,12 +58,21 @@
 
     {% endblock%}
 </div>
-
+<div class="adminActions">
+	<input type="checkbox" name="adminToggle" class="adminToggle" />
+	<a class="adminButton" href="#"><i class="fa fa-plus"></i></a>
+	<div class="adminButtons">
+		<a href="#" title="Add Course"><i class="fa fa-building"></i></a>
+		<a href="#" title="Add Reminder"><i class="fa fa-pen"></i></a>
+		<a href="#" title="Add Post"><i class="fa fa-user-plus"></i></a>
+		<a href="#" title="Edit Profile"><i class="fa fa-user-edit"></i></a>
+	</div>
+</div>
 
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a92e2a8260.js" crossorigin="anonymous"></script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
 </html>

@@ -180,9 +180,12 @@ def like():
 def save():
     post_id = int(request.args['id'])
     user_id = session['user']
-    new_saved = Saved(post=post_id, user=user_id)
-    db.session.add(new_saved)
-    db.session.commit()
+    data = Saved.query.filter_by(post=post_id,
+                                    user=user_id).first()
+    if data is None :
+      new_saved = Saved(post=post_id, user=user_id)
+      db.session.add(new_saved)
+      db.session.commit()
     return redirect(url_for('index'))
 
 @app.route('/AddCourse')
