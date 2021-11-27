@@ -89,6 +89,13 @@ def logout():
     session.pop('name', None)
     return redirect(url_for('login'))
 
+@app.route('/profile')
+def profile():
+    user_id = session['user']
+    user = User.query.get(user_id)
+    myPosts = Post.query.filter_by(author=user_id).order_by(desc(Post.id)).all()
+    return render_template('profile.html', user=user, myPosts=myPosts)
+
 
 @app.route('/index')
 def index():
@@ -96,7 +103,7 @@ def index():
     username = User.query.get(session['user']).name
     today = time.strftime("%m/%d/%Y")
     showPost = Post.query.filter_by(section=0).order_by(desc(Post.id)).all()
-    reminder = Reminder.query.filter_by(user=user_id).filter_by(date = today).all()
+    reminder = Reminder.query.filter_by(user=user_id,date = today).all()
     return render_template('index.html', reminder=reminder, showPost=showPost)
 
 @app.route('/ShowOpportunity')
@@ -105,7 +112,7 @@ def ShowOpportunity():
     username = User.query.get(session['user']).name
     today = time.strftime("%m/%d/%Y")
     showPost = Post.query.filter_by(section=1).order_by(desc(Post.id)).all()
-    reminder = Reminder.query.filter_by(user=user_id).filter_by(date = today).all()
+    reminder = Reminder.query.filter_by(user=user_id,date = today).all()
     return render_template('index.html', reminder=reminder, showPost=showPost)
 
 @app.route('/ShowResource')
@@ -114,7 +121,7 @@ def ShowResource():
     username = User.query.get(session['user']).name
     today = time.strftime("%m/%d/%Y")
     showPost = Post.query.filter_by(section=2).order_by(desc(Post.id)).all()
-    reminder = Reminder.query.filter_by(user=user_id).filter_by(date = today).all()
+    reminder = Reminder.query.filter_by(user=user_id,date = today).all()
     return render_template('index.html', reminder=reminder, showPost=showPost)
 
 

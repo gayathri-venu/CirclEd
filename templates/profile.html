@@ -1,0 +1,88 @@
+{% extends "layout.html"%} {% block content%}
+
+
+<div class="row">
+  <div class="col-8 mx-auto">
+
+      <!-- Profile widget -->
+    
+      <div class=" shadow rounded overflow-hidden">
+          <div class="px-4 pt-0 pb-4 bg-dark " style="height:200px;">
+              <div class="media">
+                
+                  <div class="profile mr-3"><img class=" rounded-circle" src="{{user.image}}" style="width:130px; height:130px; margin-top:120px">
+                  </div>
+                
+                  <div class="media-body mb-0 text-white"style="margin-top:130px;">
+                      <h4 class="mt-0 mb-0" >{{ user.name }}</h4>
+                      {% if user.role == 0 %}
+                      <p class="small mb-9 ">Student</p>
+                      {% endif %}
+                      {% if user.role == 1 %}
+                      <p class="small mb-9 ">Teacher</p>
+                      {% endif %}
+                  </div>
+              </div>
+          </div>
+
+          <div class="bg-light p-4 d-flex justify-content-end text-center"></div>
+         <br>
+          
+        <div class="py-4 px-4">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                  <h5 class="mb-0"> Recent Activity </h5>
+              </div>
+              {% for i in myPosts %}
+                <div class="row"
+                     style="box-shadow: 0 8px 16px rgba(0, 0, 0, .1); background:#fff; padding:2%; border-radius:1%">
+                    <div class="col-12">
+                        <div class="media m-1">
+                            <div class="d-flex mr-3">
+                                <a href=""><img class="img rounded-circle"
+                                                        src="{{i.author_image}}"
+                                                        alt="User" width="68" height="68"></a>
+                            </div>
+                            <div class="media-body">
+                                <p style="margin:7px 0;font-size:15px">{{i.author_name}}
+                                </p>
+    
+                                <hr>
+    
+    
+                            </div>
+    
+    
+                        </div>
+    
+                        
+                        <br>
+                        <span style="color:#495057;font-size:16px"> {{i.content }}</span>
+                        <br><br>
+                        <p>{{i.likes}} likes</p>
+                        <hr>
+                        <button type="submit" class="btn btn-dark " value="{{ i.id }}"
+                                style="color:white !important;float:left">
+                            <a href="{{ url_for('like', id = i.id)}}" style="color:white">
+                                Edit</a>
+                        </button>
+                        <button type="submit" class="btn btn-dark " value="{{ i.id }}"
+                                style="color:white !important;float:right">
+                            <a href="{{ url_for('save', id = i.id)}}" style="color:white">
+                                Delete </a>
+                        </button>
+                        <br><br>
+                    </div>
+    
+    
+                </div>
+                <br>
+                {% endfor %}
+        </div>      
+        </div>      
+    </div>
+</div>
+<br>
+<br>
+                   
+
+{% endblock%}
