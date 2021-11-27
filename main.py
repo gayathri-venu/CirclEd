@@ -30,16 +30,6 @@ class Post(db.Model):
     author_image = db.Column(db.String(50))
     likes = db.Column(db.Integer, default=0)
     
-
-
-class Course(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    code = db.Column(db.String(20))
-    name = db.Column(db.String(50))
-    instructor = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-
-
 class Reminder(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     note = db.Column(db.String(100))
@@ -50,16 +40,6 @@ class Saved(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     post = db.Column(db.Integer, db.ForeignKey('post.id'))
     user = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-class Attend(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    course = db.Column(db.Integer, db.ForeignKey('course.id'))
-    student = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-
-
-
-    
 
 
 
@@ -142,7 +122,6 @@ def ShowResource():
 def AddPost():
     if request.method == 'POST':
         user_id = session['user']
-        
         new_post = Post(content=request.form['content'],section=request.form['section'], 
                                 author=user_id,author_name=User.query.get(user_id).name,
                                 author_image=User.query.get(user_id).image)
@@ -188,23 +167,27 @@ def save():
       db.session.commit()
     return redirect(url_for('index'))
 
-@app.route('/AddCourse')
-def AddCourse():
+@app.route('/EditSettings', methods=['GET', 'POST'])
+def EditSettings():
     user_id = session['user']
-    new_course = Course(code=request.form['code'],name=request.form['name'],instructor=user_id)
-    db.session.add(new_course)
-    db.session.commit()
-    return redirect(url_for('index'))
+    user = User.query.get(user_id)
+    if request.method == 'POST':
+        user.name = request.form['name']
+        user.email = request.form['email']
+        user.password = request.form['password']
+        user.role = request.form['role']
+        user.image = request.form['image']
+        db.session.commit()
+        return redirect(url_for('index'))
 
-@app.route('/attend')
-def attend():
-    user_id = session['user']
-    code = request.form['code']
-    course = Course.query.filter_by(code=code).one()
-    new_attend = Attend(course=course,student=user_id)
-    db.seesion.add(new_attend)
-    db.session.commit()
-    return redirect(url_for('index'))
+    else:
+        return render_template('editSettings.html',user=user)
+
+
+
+
+
+
 
 
 

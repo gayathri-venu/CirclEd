@@ -1,0 +1,81 @@
+{% extends "layout.html"%}
+{% block content%}
+<div class="container ">
+    <br> <h2> &nbsp;Edit Settings </h2>
+
+    <br>
+    <div class="row ">
+
+        <div class="col-5 pl-5">
+            <form action="" method="post">
+
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" name="name" value="{{user.name}}" class="form-control" placeholder="Enter name" required>
+
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" name="email" value="{{user.email}}" class="form-control" placeholder="Enter email" required>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Password</label>
+                    <input type="password" name="password" value="{{user.password}}" class="form-control" id="exampleInputPassword1"
+                           placeholder="Enter password" required>
+                </div>
+                <div class="form-group">
+                    <label>Profile photo</label>
+                    <input type="text" name="image" value="{{user.image}}" class="form-control"
+                           placeholder="Add profile photo" required>
+                </div>
+                
+
+                    <br>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <br>
+                        {% if user.role == 0 %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="role" id="radiobutton1" value="0" checked required>
+                            <label class="form-check-label" for="radiobutton1">
+                              Student
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="role" id="radiobutton2" value="1" required>
+                            <label class="form-check-label" for="radiobutton2">
+                              Teacher
+                            </label>
+                        </div>
+                        {% endif %}
+                        {% if user.role == 1 %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="role" id="radiobutton1" value="0" required>
+                            <label class="form-check-label" for="radiobutton1">
+                              Student
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="role" id="radiobutton2" value="1" checked required>
+                            <label class="form-check-label" for="radiobutton2">
+                              Teacher
+                            </label>
+                        </div>
+                        {% endif %}
+                        
+                    </div>
+    
+                <button type="submit" class="btn btn-dark">Edit</button>
+                <br>
+                <br>
+                <br>
+            </form>
+
+        </div>
+        <div class="col-7"><img src="https://image.freepik.com/free-vector/focused-tiny-people-reading-books_74855-5836.jpg" alt=""></div>
+    </div>
+</div>
+{% endblock%}
