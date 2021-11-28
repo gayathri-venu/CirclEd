@@ -181,7 +181,12 @@ def like():
     post =  Post.query.get(post_id)
     post.likes += 1
     db.session.commit()
-    return redirect(url_for('index'))
+    if post.section == 0:
+        return redirect(url_for('index'))
+    elif post.section == 1:
+        return redirect(url_for('ShowOpportunity'))
+    else:
+        return redirect(url_for('ShowResource'))
 
 
 @app.route('/save')
@@ -194,7 +199,13 @@ def save():
       new_saved = Saved(post=post_id, user=user_id)
       db.session.add(new_saved)
       db.session.commit()
-    return redirect(url_for('index'))
+    if post.section == 0:
+        return redirect(url_for('index'))
+    elif post.section == 1:
+        return redirect(url_for('ShowOpportunity'))
+    else:
+        return redirect(url_for('ShowResource'))
+
 
 @app.route('/EditSettings', methods=['GET', 'POST'])
 def EditSettings():
