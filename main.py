@@ -11,7 +11,7 @@ app.config['SECRET_KEY'] = 'the random string'
 db = SQLAlchemy(app)
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
-#######################MODELS###############################
+#########################MODELS###############################
 
 class User(db.Model):
     id = db.Column(db.Integer,primary_key=True)
@@ -46,7 +46,9 @@ class Saved(db.Model):
 
 
 
-######################ROUTES################################
+#########################ROUTES################################
+
+
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -99,6 +101,23 @@ def profile():
     myPosts = Post.query.filter_by(author=user_id).order_by(desc(Post.id)).all()
     return render_template('profile.html', user=user, myPosts=myPosts)
 
+@app.route('/EditSettings', methods=['GET', 'POST'])
+def EditSettings():
+    user_id = session['user']
+    user = User.query.get(user_id)
+    if request.method == 'POST':
+        user.name = request.form['name']
+        user.email = request.form['email']
+        user.password = request.form['password']
+        user.role = request.form['role']
+        user.image = request.form['image']
+        db.session.commit()
+        return redirect(url_for('index'))
+
+    else:
+        return render_template('editSettings.html',user=user)
+
+
 
 @app.route('/index')
 def index():
@@ -126,6 +145,39 @@ def ShowResource():
     showPost = Post.query.filter_by(section=2).order_by(desc(Post.id)).all()
     reminder = Reminder.query.filter_by(user=user_id,date = today).all()
     return render_template('index.html', reminder=reminder, showPost=showPost)
+
+@app.route('/like')
+def like():
+    post_id = int(request.args['id'])
+    post =  Post.query.get(post_id)
+    post.likes += 1
+    db.session.commit()
+    if post.section == 0:
+        return redirect(url_for('index'))
+    elif post.section == 1:
+        return redirect(url_for('ShowOpportunity'))
+    else:
+        return redirect(url_for('ShowResource'))
+
+
+@app.route('/save')
+def save():
+    post_id = int(request.args['id'])
+    post =  Post.query.get(post_id)
+    user_id = session['user']
+    data = Saved.query.filter_by(post=post_id,
+                                    user=user_id).first()
+    if data is None :
+      new_saved = Saved(content = post.content, author_name = post.author_name, author_image = post.author_image,
+            post=post_id, user=user_id)
+      db.session.add(new_saved)
+      db.session.commit()
+    if post.section == 0:
+        return redirect(url_for('index'))
+    elif post.section == 1:
+        return redirect(url_for('ShowOpportunity'))
+    else:
+        return redirect(url_for('ShowResource'))
 
 
 @app.route('/AddPost', methods=['GET', 'POST'])
@@ -163,6 +215,20 @@ def DeletePost():
     db.session.commit()
     return redirect(url_for('profile'))
 
+@app.route('/SavedItems')
+def SavedItems():
+    user_id = session['user']
+    saved = Saved.query.filter_by(user=user_id).order_by(desc(Saved.id)).all()
+    return render_template('mySaved.html', saved=saved)
+
+@app.route('/unsave')
+def unsave():
+    save_id = int(request.args['id'])
+    save = Saved.query.filter_by(id=save_id).one()
+    db.session.delete(save)
+    db.session.commit()
+    return redirect(url_for('SavedItems')) 
+
 
 @app.route('/AddReminder', methods=['GET', 'POST'])
 def AddReminder():
@@ -176,72 +242,6 @@ def AddReminder():
 
     else:
         return render_template('addReminder.html')
-
-
-@app.route('/like')
-def like():
-    post_id = int(request.args['id'])
-    post =  Post.query.get(post_id)
-    post.likes += 1
-    db.session.commit()
-    if post.section == 0:
-        return redirect(url_for('index'))
-    elif post.section == 1:
-        return redirect(url_for('ShowOpportunity'))
-    else:
-        return redirect(url_for('ShowResource'))
-
-
-@app.route('/save')
-def save():
-    post_id = int(request.args['id'])
-    post =  Post.query.get(post_id)
-    user_id = session['user']
-    data = Saved.query.filter_by(post=post_id,
-                                    user=user_id).first()
-    if data is None :
-      new_saved = Saved(content = post.content, author_name = post.author_name, author_image = post.author_image,
-            likes = post.likes, post=post_id, user=user_id)
-      db.session.add(new_saved)
-      db.session.commit()
-    if post.section == 0:
-        return redirect(url_for('index'))
-    elif post.section == 1:
-        return redirect(url_for('ShowOpportunity'))
-    else:
-        return redirect(url_for('ShowResource'))
-
-
-@app.route('/EditSettings', methods=['GET', 'POST'])
-def EditSettings():
-    user_id = session['user']
-    user = User.query.get(user_id)
-    if request.method == 'POST':
-        user.name = request.form['name']
-        user.email = request.form['email']
-        user.password = request.form['password']
-        user.role = request.form['role']
-        user.image = request.form['image']
-        db.session.commit()
-        return redirect(url_for('index'))
-
-    else:
-        return render_template('editSettings.html',user=user)
-
-
-@app.route('/SavedItems')
-def SavedItems():
-    user_id = session['user']
-    saved = Saved.query.filter_by(user=user_id).order_by(desc(Saved.id)).all()
-    return render_template('mySaved.html', saved=saved)
-
-@app.route('/unsave')
-def unsave():
-    save_id = int(request.args['id'])
-    save = Saved.query.filter_by(id=save_id).one()
-    db.session.delete(save)
-    db.session.commit()
-    return redirect(url_for('SavedItems'))    
 
 @app.route('/Reminders')
 def Reminders():
@@ -273,20 +273,7 @@ def DeleteReminder():
 
 
 
-
-
-
-
-
-
-
-
-
-    
-
-
-
-######################MAIN################################
+########################MAIN################################
 
 if __name__ == '__main__':
     db.create_all()
