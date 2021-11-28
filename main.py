@@ -38,6 +38,9 @@ class Reminder(db.Model):
 
 class Saved(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(500))
+    author_name = db.Column(db.String(50))
+    author_image = db.Column(db.String(50))
     post = db.Column(db.Integer, db.ForeignKey('post.id'))
     user = db.Column(db.Integer, db.ForeignKey('user.id'))
 
@@ -192,11 +195,13 @@ def like():
 @app.route('/save')
 def save():
     post_id = int(request.args['id'])
+    post =  Post.query.get(post_id)
     user_id = session['user']
     data = Saved.query.filter_by(post=post_id,
                                     user=user_id).first()
     if data is None :
-      new_saved = Saved(post=post_id, user=user_id)
+      new_saved = Saved(content = post.content, author_name = post.author_name, author_image = post.author_image,
+            likes = post.likes, post=post_id, user=user_id)
       db.session.add(new_saved)
       db.session.commit()
     if post.section == 0:
@@ -224,6 +229,47 @@ def EditSettings():
         return render_template('editSettings.html',user=user)
 
 
+@app.route('/SavedItems')
+def SavedItems():
+    user_id = session['user']
+    saved = Saved.query.filter_by(user=user_id).order_by(desc(Saved.id)).all()
+    return render_template('mySaved.html', saved=saved)
+
+@app.route('/unsave')
+def unsave():
+    save_id = int(request.args['id'])
+    save = Saved.query.filter_by(id=save_id).one()
+    db.session.delete(save)
+    db.session.commit()
+    return redirect(url_for('SavedItems'))    
+
+@app.route('/Reminders')
+def Reminders():
+    user_id = session['user']
+    today = time.strftime("%m/%d/%Y")
+    reminders = Reminder.query.filter_by(user=user_id).all()
+    return render_template('myReminders.html', reminders=reminders)
+
+@app.route('/EditReminder', methods=['GET', 'POST'])
+def EditReminder():
+    rem_id = int(request.args['id'])
+    rem = Reminder.query.get(rem_id)
+    if request.method == 'POST':
+        rem.content = request.form['note']
+        rem.date = request.form['date']
+        db.session.commit()
+        return redirect(url_for('Reminders'))
+
+    else:
+        return render_template('editReminder.html',rem=rem)
+
+@app.route('/DeleteReminder')
+def DeleteReminder():
+    rem_id = int(request.args['id'])
+    rem = Reminder.query.filter_by(id=rem_id).one()
+    db.session.delete(rem)
+    db.session.commit()
+    return redirect(url_for('Reminders'))
 
 
 

@@ -1,0 +1,64 @@
+{% extends "layout.html"%}
+{% block content%}
+<body style="margin:0;padding:0;">
+    <div class="row">
+    
+        
+    
+        <div class="col-5" style="margin-left:15%">
+    
+           
+            <div class="homeDiv">
+                {% for i in saved %}
+                <div class="row"
+                     style="box-shadow: 0 8px 16px rgba(0, 0, 0, .1); background:#fff; padding:2%; border-radius:1%">
+                    <div class="col-12">
+                        <div class="media m-1">
+                            <div class="d-flex mr-3">
+                                <a href=""><img class="img rounded-circle"
+                                                        src="{{i.author_image}}"
+                                                        alt="User" width="68" height="68"></a>
+                            </div>
+                            <div class="media-body">
+                                <p style="margin:7px 0;font-size:15px">{{i.author_name}}
+                                </p>
+    
+                                <hr>
+    
+    
+                            </div>
+    
+    
+                        </div>
+    
+                        
+                        <br>
+                        <span style="color:#495057;font-size:16px"> {{i.content }}</span>
+                        <br><br>
+                       
+                        <hr>
+                        <button type="submit" class="btn btn-dark " value="{{ i.id }}"
+                                style="color:white !important;float:right">
+                            <a href="{{ url_for('unsave', id = i.id)}}" style="color:white">
+                                Unsave </a>
+                        </button>
+                        <br><br>
+                    </div>
+    
+    
+                </div>
+                <br>
+                {% endfor %}
+            </div>
+        </div>
+        
+    
+    
+    </div>
+    
+    
+    </body>
+    
+
+
+{% endblock%}

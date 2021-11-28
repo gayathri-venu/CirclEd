@@ -7,14 +7,14 @@
     <link rel="stylesheet" href="/static/layout.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
 
 </head>
 
 <body>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark " >
 
-    <a class="navbar-brand" href="/home">CirclEd</a>&nbsp; &nbsp; &nbsp; &nbsp;
+    <a class="navbar-brand" href="/index">CirclEd</a>&nbsp; &nbsp; &nbsp; &nbsp;
     <ul class="nav navbar-nav ">
 
         <li class="nav-item" style="font-size:18px">
@@ -39,9 +39,15 @@
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="/profile">Profile</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="">Reminders</a>
+                <a class="dropdown-item" href="/Reminders">Reminders</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href=""> Saved</a>
+                <a class="dropdown-item" href="/SavedItems"> Saved</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/AddReminder">Add Reminder</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/AddPost">Add Post</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/EditSettings"> Settings</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="/logout"> Log out</a>
             </div>
@@ -58,12 +64,18 @@
 
     {% endblock%}
 </div>
-
-
+<!--<div class="adminActions">
+	<input type="checkbox" name="adminToggle" class="adminToggle" />
+	<a class="adminButton" href="#"><i class="fa fa-plus"></i></a>
+	<div class="adminButtons">
+		<a href="/AddReminder" title="Add Reminder"><i class="fa fa-pen"></i></a>
+		<a href="/AddPost" title="Add Post"><i class="fa fa-user-plus"></i></a>
+		<a href="/EditSettings" title="Edit Setting"><i class="fa fa-user-edit"></i></a>
+	</div>
+</div>-->
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a92e2a8260.js" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
 </html>
