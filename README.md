@@ -42,6 +42,11 @@ Python, Flask, SQLite, Bootstrap
 * Copy the localhost url (usually localhost:5000/) and paste in browser
 
 
+* Test Credentials
+ email : test123@gmail.com
+ password : 123
+
+
 
 ## The databases in the system
 1. User
