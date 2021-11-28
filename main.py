@@ -139,6 +139,28 @@ def AddPost():
     else:
         return render_template('addPost.html')
 
+@app.route('/EditPost', methods=['GET', 'POST'])
+def EditPost():
+    post_id = int(request.args['id'])
+    post = Post.query.get(post_id)
+    if request.method == 'POST':
+        post.content = request.form['content']
+        post.section = request.form['section']
+        db.session.commit()
+        return redirect(url_for('profile'))
+
+    else:
+        return render_template('editPost.html',post=post)
+
+@app.route('/DeletePost')
+def DeletePost():
+    post_id = int(request.args['id'])
+    post = Post.query.filter_by(id=post_id).one()
+    db.session.delete(post)
+    db.session.commit()
+    return redirect(url_for('profile'))
+
+
 @app.route('/AddReminder', methods=['GET', 'POST'])
 def AddReminder():
     if request.method == 'POST':

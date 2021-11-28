@@ -29,6 +29,7 @@
          <br>
           
         <div class="py-4 px-4">
+              {% if myPosts %}
               <div class="d-flex align-items-center justify-content-between mb-2">
                   <h5 class="mb-0"> Recent Activity </h5>
               </div>
@@ -62,12 +63,12 @@
                         <hr>
                         <button type="submit" class="btn btn-dark " value="{{ i.id }}"
                                 style="color:white !important;float:left">
-                            <a href="{{ url_for('like', id = i.id)}}" style="color:white">
+                            <a href="{{ url_for('EditPost', id = i.id)}}" style="color:white">
                                 Edit</a>
                         </button>
                         <button type="submit" class="btn btn-dark " value="{{ i.id }}"
                                 style="color:white !important;float:right">
-                            <a href="{{ url_for('save', id = i.id)}}" style="color:white">
+                            <a href="{{ url_for('DeletePost', id = i.id)}}" style="color:white">
                                 Delete </a>
                         </button>
                         <br><br>
@@ -77,8 +78,13 @@
                 </div>
                 <br>
                 {% endfor %}
-        </div>      
-        </div>      
+                {% else %}
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <h5 class="mb-0"> No Activity </h5>
+                </div>
+                {% endif %}
+          </div>      
+      </div>      
     </div>
 </div>
 <br>
